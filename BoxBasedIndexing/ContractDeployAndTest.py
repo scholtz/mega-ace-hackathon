@@ -16,15 +16,15 @@ CLEARSTATE_SRC = os.path.join('.', 'contracts', "BoxBasedDB_ClearStateProgram.te
 #X_ev=[4534,460,714,5587,1275,3440,1690,3517,8634,4109]
 #Y_ev=[2574,9931,4646,3162,243,6631,3156,7162,1937,1427]
 
-# X_ev=[0,3,3]
-# Y_ev=[0,0,3]
+X_ev=[0,3,3]
+Y_ev=[0,0,3]
 
-# tests=[{'x':0,'y':0,'r':3,'results':{'0-0':True,'3-0':True}}]
+tests=[{'x':0,'y':0,'r':3,'results':{'0-0':True,'3-0':True}}]
 
-X_ev=[909,909,910,910]
-Y_ev=[909,910,909,910]
+# X_ev=[909,909,910,910]
+# Y_ev=[909,910,909,910]
 
-tests=[{'x':909,'y':909,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}}]
+# tests=[{'x':909,'y':909,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}}]
 
 def compileTEAL(client, code):
     compile_response = client.compile(code)

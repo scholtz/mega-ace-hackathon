@@ -111,9 +111,6 @@ def approval_program():
     FindXMax = If(FindX + Radius < Int(10000), FindX + Radius, Int(10000))
     FindYMin = If(FindY > Radius, FindY, Int(0))
     FindYMax = If(FindY + Radius < Int(10000), FindY + Radius, Int(10000))
-    i = ScratchVar(TealType.uint64)
-    storedXScratch = ScratchVar(TealType.uint64)
-    storedYScratch = ScratchVar(TealType.uint64)
 
     FindInBoxnameTL = getBox(FindXMin,FindYMin)
     FindInBoxnameTR = getBox(FindXMax,FindYMin)
@@ -125,11 +122,17 @@ def approval_program():
             # TOP LEFT BOX
             findAndLogResults(FindInBoxnameTL, FindX, FindY, Radius, FindXMin, FindXMax, FindYMin, FindYMax),
             # TOP RIGHT BOX
-            findAndLogResults(FindInBoxnameTR, FindX, FindY, Radius, FindXMin, FindXMax, FindYMin, FindYMax),
+            If(FindInBoxnameTR != FindInBoxnameTL,
+                findAndLogResults(FindInBoxnameTR, FindX, FindY, Radius, FindXMin, FindXMax, FindYMin, FindYMax),
+            ),
             # BOTTOM LEFT BOX
-            findAndLogResults(FindInBoxnameBL, FindX, FindY, Radius, FindXMin, FindXMax, FindYMin, FindYMax),
+            If(FindInBoxnameTL != FindInBoxnameBL,
+                findAndLogResults(FindInBoxnameBL, FindX, FindY, Radius, FindXMin, FindXMax, FindYMin, FindYMax),
+            ),
             # BOTTOM RIGHT BOX
-            findAndLogResults(FindInBoxnameBR, FindX, FindY, Radius, FindXMin, FindXMax, FindYMin, FindYMax),
+            If(FindInBoxnameTR != FindInBoxnameBR,
+                findAndLogResults(FindInBoxnameBR, FindX, FindY, Radius, FindXMin, FindXMax, FindYMin, FindYMax),
+            ),
             Return(Int(1)),
         ]
     )
