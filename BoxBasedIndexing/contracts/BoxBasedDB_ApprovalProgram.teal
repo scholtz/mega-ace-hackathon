@@ -2,15 +2,15 @@
 txn ApplicationID
 int 0
 ==
-bnz main_l28
+bnz main_l82
 txna ApplicationArgs 0
 byte "NONE"
 ==
-bnz main_l27
+bnz main_l81
 txna ApplicationArgs 0
 byte "CREATE"
 ==
-bnz main_l24
+bnz main_l78
 txna ApplicationArgs 0
 byte "LOOKUP_BY_LOC"
 ==
@@ -19,87 +19,53 @@ err
 main_l5:
 txna ApplicationArgs 1
 btoi
-txna ApplicationArgs 2
-btoi
-callsub getBox_0
-box_get
-store 7
-store 6
-int 0
-store 8
-main_l6:
-load 8
-load 6
-extract 0 8
-btoi
-<
-bnz main_l8
-int 1
-return
-main_l8:
-txna ApplicationArgs 1
-btoi
-txna ApplicationArgs 2
-btoi
-callsub getBox_0
-load 8
-int 60
-*
-int 44
-+
-int 8
-box_extract
-btoi
-store 9
-txna ApplicationArgs 1
-btoi
-txna ApplicationArgs 2
-btoi
-callsub getBox_0
-load 8
-int 60
-*
-int 52
-+
-int 8
-box_extract
-btoi
-store 10
-load 9
-txna ApplicationArgs 1
-btoi
 txna ApplicationArgs 3
 btoi
 >
-bnz main_l23
+bnz main_l77
 int 0
-main_l10:
->=
-load 9
-txna ApplicationArgs 1
-btoi
-txna ApplicationArgs 3
-btoi
-+
-int 10000
-<
-bnz main_l22
-int 10000
-main_l12:
-<=
-&&
-load 10
+main_l7:
 txna ApplicationArgs 2
 btoi
 txna ApplicationArgs 3
 btoi
 >
-bnz main_l21
+bnz main_l76
 int 0
-main_l14:
->=
-&&
-load 10
+main_l9:
+callsub getBox_0
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l75
+int 0
+main_l11:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l74
+int 10000
+main_l13:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l73
+int 0
+main_l15:
 txna ApplicationArgs 2
 btoi
 txna ApplicationArgs 3
@@ -107,67 +73,333 @@ btoi
 +
 int 10000
 <
-bnz main_l20
+bnz main_l72
 int 10000
-main_l16:
-<=
-&&
-bnz main_l18
 main_l17:
-load 8
-int 1
-+
-store 8
-b main_l6
-main_l18:
+callsub findAndLogResults_2
 txna ApplicationArgs 1
-btoi
-txna ApplicationArgs 2
-btoi
-load 9
-load 10
-callsub distance_1
-txna ApplicationArgs 3
-btoi
-<=
-bz main_l17
-txna ApplicationArgs 1
-btoi
-txna ApplicationArgs 2
-btoi
-callsub getBox_0
-load 8
-int 60
-*
-int 8
-+
-int 60
-box_extract
-log
-b main_l17
-main_l20:
-txna ApplicationArgs 2
 btoi
 txna ApplicationArgs 3
 btoi
 +
-b main_l16
+int 10000
+<
+bnz main_l71
+int 10000
+main_l19:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l70
+int 0
 main_l21:
+callsub getBox_0
+txna ApplicationArgs 1
+btoi
 txna ApplicationArgs 2
 btoi
-b main_l14
-main_l22:
+txna ApplicationArgs 3
+btoi
 txna ApplicationArgs 1
 btoi
 txna ApplicationArgs 3
 btoi
-+
-b main_l12
+>
+bnz main_l69
+int 0
 main_l23:
 txna ApplicationArgs 1
 btoi
-b main_l10
-main_l24:
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l68
+int 10000
+main_l25:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l67
+int 0
+main_l27:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l66
+int 10000
+main_l29:
+callsub findAndLogResults_2
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l65
+int 0
+main_l31:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l64
+int 10000
+main_l33:
+callsub getBox_0
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l63
+int 0
+main_l35:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l62
+int 10000
+main_l37:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l61
+int 0
+main_l39:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l60
+int 10000
+main_l41:
+callsub findAndLogResults_2
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l59
+int 10000
+main_l43:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l58
+int 10000
+main_l45:
+callsub getBox_0
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l57
+int 0
+main_l47:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l56
+int 10000
+main_l49:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l55
+int 0
+main_l51:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l54
+int 10000
+main_l53:
+callsub findAndLogResults_2
+int 1
+return
+main_l54:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l53
+main_l55:
+txna ApplicationArgs 2
+btoi
+b main_l51
+main_l56:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l49
+main_l57:
+txna ApplicationArgs 1
+btoi
+b main_l47
+main_l58:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l45
+main_l59:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l43
+main_l60:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l41
+main_l61:
+txna ApplicationArgs 2
+btoi
+b main_l39
+main_l62:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l37
+main_l63:
+txna ApplicationArgs 1
+btoi
+b main_l35
+main_l64:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l33
+main_l65:
+txna ApplicationArgs 1
+btoi
+b main_l31
+main_l66:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l29
+main_l67:
+txna ApplicationArgs 2
+btoi
+b main_l27
+main_l68:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l25
+main_l69:
+txna ApplicationArgs 1
+btoi
+b main_l23
+main_l70:
+txna ApplicationArgs 2
+btoi
+b main_l21
+main_l71:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l19
+main_l72:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l17
+main_l73:
+txna ApplicationArgs 2
+btoi
+b main_l15
+main_l74:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l13
+main_l75:
+txna ApplicationArgs 1
+btoi
+b main_l11
+main_l76:
+txna ApplicationArgs 2
+btoi
+b main_l9
+main_l77:
+txna ApplicationArgs 1
+btoi
+b main_l7
+main_l78:
 txn Sender
 global CreatorAddress
 ==
@@ -212,8 +444,8 @@ store 3
 store 2
 load 3
 !
-bnz main_l26
-main_l25:
+bnz main_l80
+main_l79:
 txna ApplicationArgs 5
 btoi
 txna ApplicationArgs 6
@@ -282,7 +514,7 @@ concat
 box_replace
 int 1
 return
-main_l26:
+main_l80:
 txna ApplicationArgs 5
 btoi
 txna ApplicationArgs 6
@@ -308,11 +540,11 @@ int 0
 int 0
 itob
 box_replace
-b main_l25
-main_l27:
+b main_l79
+main_l81:
 int 1
 return
-main_l28:
+main_l82:
 int 1
 return
 
@@ -391,4 +623,90 @@ distance_1_l12:
 *
 +
 sqrt
+retsub
+
+// findAndLogResults
+findAndLogResults_2:
+proto 8 0
+frame_dig -8
+box_get
+store 7
+store 6
+load 7
+bz findAndLogResults_2_l7
+load 6
+extract 0 8
+btoi
+store 8
+int 0
+store 9
+findAndLogResults_2_l2:
+load 9
+load 6
+extract 0 8
+btoi
+<
+bz findAndLogResults_2_l7
+frame_dig -8
+load 9
+int 60
+*
+int 44
++
+int 8
+box_extract
+btoi
+store 10
+frame_dig -8
+load 9
+int 60
+*
+int 52
++
+int 8
+box_extract
+btoi
+store 11
+load 10
+frame_dig -4
+>=
+load 10
+frame_dig -3
+<=
+&&
+load 11
+frame_dig -2
+>=
+&&
+load 11
+frame_dig -1
+<=
+&&
+bnz findAndLogResults_2_l5
+findAndLogResults_2_l4:
+load 9
+int 1
++
+store 9
+b findAndLogResults_2_l2
+findAndLogResults_2_l5:
+frame_dig -7
+frame_dig -6
+load 10
+load 11
+callsub distance_1
+frame_dig -5
+<=
+bz findAndLogResults_2_l4
+frame_dig -8
+load 9
+int 60
+*
+int 8
++
+int 60
+box_extract
+log
+b findAndLogResults_2_l4
+findAndLogResults_2_l7:
 retsub
