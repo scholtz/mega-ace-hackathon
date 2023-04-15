@@ -10,7 +10,25 @@ def getBox( X, Y ):
     # 8634 1937 = 9 + 11 * 2 = 31
     # 10000 10000 = 10 + 11 * 10 = 120
     return Itob( X / Int(910) + Int(11) * ( Y / Int(910) ) )
+
+@Subroutine(TealType.uint64)
+def distance(x1, y1, x2, y2):
+    # Calculate the horizontal and vertical distance between the points
     
+    dx = If(x1 > x2, x1-x2, x2-x1)
+    dy = If(y1 > y2, y1-y2, y2-y1)
+
+    # Square the horizontal and vertical distance
+    dx_squared = Mul(dx,dx)
+    dy_squared = Mul(dy,dy)
+
+    # Add the squares of the horizontal and vertical distance
+    sum_squared = dx_squared + dy_squared
+
+    # Take the square root of the sum to get the distance
+    dist = Sqrt(sum_squared)
+    # Return the distance
+    return dist
 
 def approval_program():
     is_creator = Txn.sender() == Global.creator_address()
@@ -62,24 +80,16 @@ def approval_program():
     FindContents = App.box_get(FindInBoxname)
     MaxIndex = Btoi(Substring(FindContents.value(),Int(0),Int(8)))
     Radius = Btoi(Txn.application_args[3])
-    FindXMin = If(FindX > Radius, FindX, Int(0))
-    FindXMax = If(FindX + Radius < Int(10000), FindX + Radius, Int(10000))
-    FindYMin = If(FindY > Radius, FindY, Int(0))
-    FindYMax = If(FindY + Radius < Int(10000), FindY + Radius, Int(10000))
     i = ScratchVar(TealType.uint64)
     storedX =Btoi(App.box_extract(FindInBoxname, i.load() * Int(60) + Int(8+12+3*8), Int(8)))
     storedY =Btoi(App.box_extract(FindInBoxname, i.load() * Int(60) + Int(8+12+4*8), Int(8)))
     storedObject =App.box_extract(FindInBoxname, i.load() * Int(60) + Int(8), Int(60))
-    storedXScratch = ScratchVar(TealType.uint64)
-    storedYScratch = ScratchVar(TealType.uint64)
     FindMonstersInLocation = Seq(
         [
             FindContents,
             For(i.store(Int(0)), i.load() < MaxIndex, i.store(i.load() + Int(1))).Do(
                 Seq([
-                    storedXScratch.store(storedX),
-                    storedYScratch.store(storedY),
-                    If(And(storedXScratch.load() >= FindXMin, storedXScratch.load() <= FindXMax, storedYScratch.load() >= FindYMin, storedYScratch.load() <= FindYMax) , Log(storedObject)),
+                    If(distance(FindX,FindY, storedX, storedY) <= Radius , Log(storedObject)),
                 ])
             ),
             Return(Int(1)),
