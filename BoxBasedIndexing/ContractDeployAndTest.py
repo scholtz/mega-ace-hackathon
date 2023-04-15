@@ -12,11 +12,14 @@ import random
 APPROVAL_SRC = os.path.join('.', 'contracts', "BoxBasedDB_ApprovalProgram.teal")
 CLEARSTATE_SRC = os.path.join('.', 'contracts', "BoxBasedDB_ClearStateProgram.teal")
 
+# Basic set
+#X_ev=[4534,460,714,5587,1275,3440,1690,3517,8634,4109]
+#Y_ev=[2574,9931,4646,3162,243,6631,3156,7162,1937,1427]
 
-X_ev=[4534,460,714,5587,1275,3440,1690,3517,8634,4109]
+X_ev=[0,1,2]
+Y_ev=[0,0,2]
 
-Y_ev=[2574,9931,4646,3162,243,6631,3156,7162,1937,1427]
-
+tests=[{'x':0,'y':0,'r':1,'results':{'0-0':True,'1-0':True}}]
 
 def compileTEAL(client, code):
     compile_response = client.compile(code)
@@ -105,7 +108,7 @@ def AddMonster(AppID, monsterName, attack, defense, HP, X, Y, ASAid):
     #    wait_for_confirmation(client, txn.get_txid())
 
 
-def FindMonsterByLocation(AppID, lat, long):
+def FindMonsterByLocation(AppID, lat, long, radius):
     client = sandbox.get_algod_client()
     accounts = sandbox.get_accounts()
     sender = accounts[0]
@@ -130,7 +133,7 @@ def FindMonsterByLocation(AppID, lat, long):
         index=AppID,
         sp=client.suggested_params(),
         on_complete=OnComplete.NoOpOC.real,
-        app_args=["LOOKUP_BY_LOC", lat, long, 0],
+        app_args=["LOOKUP_BY_LOC", lat, long, radius],
         boxes=RelevantBoxes[-8:]
     )
     txn_list.append(last_txn)
@@ -178,32 +181,28 @@ def AddBatchOfMonsters(X_ev, Y_ev, AppID):
 class BoxTest(unittest.TestCase):
     AppID = None
 
-    def check_MonstersLoadedCorrectly(self, monsterList):
-        testedMonsters = []
+    def check_MonstersLoadedCorrectly(self, monsterList, tests):
+        #testedMonsters = []
         shuffledIndices = list(range(len(monsterList)))
         random.shuffle(shuffledIndices)
-        for h, i in enumerate(shuffledIndices):
-            ev = monsterList[i]
+        for test in tests:
+            print("test",test)
             try:
-                txnResponse = FindMonsterByLocation(AppID, ev["X"], ev["Y"])
+                txnResponse = FindMonsterByLocation(AppID, test['x'], test['y'], test['r'])
             except:
                 self.assertTrue(False, "Failed to find some monster")
-            testedMonsters.append(ev)
-
-            logResult = b64decode(txnResponse["logs"][0])
-            logName = str(logResult[0:12], encoding="utf-8")
-            print("logResult",logResult)
-            self.assertEqual(testedMonsters[h]["name"], logName)
-            for name, slice_from, slice_to in [
-                ('a', 12, 20),
-                ('d', 20, 28),
-                ('hp', 28, 36),
-                ('X', 36, 44),
-                ('Y', 44, 52),
-                ('ASAid', 52, 60),
-            ]:
-                item = int.from_bytes(logResult[slice_from:slice_to],'big')
-                self.assertEqual(testedMonsters[h][name], item)
+            #testedMonsters.append(ev)
+            for txnResponseItem in txnResponse["logs"]:
+                logResult = b64decode(txnResponseItem)
+                x = int.from_bytes(logResult[36:44], 'big')
+                y = int.from_bytes(logResult[44:52], 'big')
+                key= str(x) + '-' + str(y)
+                print("logResult",logResult, key)
+                
+                self.assertTrue(key in test['results'])
+                del test['results'][key]
+        print('residual list', test['results'])
+        self.assertTrue(len(test['results']) == 0)
 
 
 class TestPrelimWithFewMonsters(BoxTest):
@@ -214,7 +213,7 @@ class TestPrelimWithFewMonsters(BoxTest):
 
     def test_MonstersLoadedCorrectly(self):
         print("Checking if added monsters are loaded...")
-        self.check_MonstersLoadedCorrectly(self.AllMonsters)
+        self.check_MonstersLoadedCorrectly(self.AllMonsters, tests)
 
 
 
