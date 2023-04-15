@@ -80,16 +80,26 @@ def approval_program():
     FindContents = App.box_get(FindInBoxname)
     MaxIndex = Btoi(Substring(FindContents.value(),Int(0),Int(8)))
     Radius = Btoi(Txn.application_args[3])
+    FindXMin = If(FindX > Radius, FindX, Int(0))
+    FindXMax = If(FindX + Radius < Int(10000), FindX + Radius, Int(10000))
+    FindYMin = If(FindY > Radius, FindY, Int(0))
+    FindYMax = If(FindY + Radius < Int(10000), FindY + Radius, Int(10000))
     i = ScratchVar(TealType.uint64)
     storedX =Btoi(App.box_extract(FindInBoxname, i.load() * Int(60) + Int(8+12+3*8), Int(8)))
     storedY =Btoi(App.box_extract(FindInBoxname, i.load() * Int(60) + Int(8+12+4*8), Int(8)))
     storedObject =App.box_extract(FindInBoxname, i.load() * Int(60) + Int(8), Int(60))
+    storedXScratch = ScratchVar(TealType.uint64)
+    storedYScratch = ScratchVar(TealType.uint64)
     FindMonstersInLocation = Seq(
         [
             FindContents,
             For(i.store(Int(0)), i.load() < MaxIndex, i.store(i.load() + Int(1))).Do(
                 Seq([
-                    If(distance(FindX,FindY, storedX, storedY) <= Radius , Log(storedObject)),
+                    storedXScratch.store(storedX),
+                    storedYScratch.store(storedY),
+                    If(And(storedXScratch.load() >= FindXMin, storedXScratch.load() <= FindXMax, storedYScratch.load() >= FindYMin, storedYScratch.load() <= FindYMax), # use expensive sqrt only if it matches the box
+                        If(distance(FindX, FindY, storedXScratch.load(), storedYScratch.load()) <= Radius , Log(storedObject)),
+                    ),
                 ])
             ),
             Return(Int(1)),

@@ -21,6 +21,11 @@ Y_ev=[0,0,3]
 
 tests=[{'x':0,'y':0,'r':3,'results':{'0-0':True,'3-0':True}}]
 
+# X_ev=[909,909,910,910]
+# Y_ev=[909,910,909,910]
+
+# tests=[{'x':909,'y':909,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}}]
+
 def compileTEAL(client, code):
     compile_response = client.compile(code)
     return b64decode(compile_response['result'])

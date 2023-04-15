@@ -2,15 +2,15 @@
 txn ApplicationID
 int 0
 ==
-bnz main_l15
+bnz main_l28
 txna ApplicationArgs 0
 byte "NONE"
 ==
-bnz main_l14
+bnz main_l27
 txna ApplicationArgs 0
 byte "CREATE"
 ==
-bnz main_l11
+bnz main_l24
 txna ApplicationArgs 0
 byte "LOOKUP_BY_LOC"
 ==
@@ -41,10 +41,6 @@ txna ApplicationArgs 1
 btoi
 txna ApplicationArgs 2
 btoi
-txna ApplicationArgs 1
-btoi
-txna ApplicationArgs 2
-btoi
 callsub getBox_0
 load 8
 int 60
@@ -54,6 +50,7 @@ int 44
 int 8
 box_extract
 btoi
+store 9
 txna ApplicationArgs 1
 btoi
 txna ApplicationArgs 2
@@ -67,18 +64,73 @@ int 52
 int 8
 box_extract
 btoi
-callsub distance_1
+store 10
+load 9
+txna ApplicationArgs 1
+btoi
 txna ApplicationArgs 3
 btoi
+>
+bnz main_l23
+int 0
+main_l10:
+>=
+load 9
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l22
+int 10000
+main_l12:
 <=
-bnz main_l10
-main_l9:
+&&
+load 10
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l21
+int 0
+main_l14:
+>=
+&&
+load 10
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l20
+int 10000
+main_l16:
+<=
+&&
+bnz main_l18
+main_l17:
 load 8
 int 1
 +
 store 8
 b main_l6
-main_l10:
+main_l18:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+load 9
+load 10
+callsub distance_1
+txna ApplicationArgs 3
+btoi
+<=
+bz main_l17
 txna ApplicationArgs 1
 btoi
 txna ApplicationArgs 2
@@ -92,8 +144,30 @@ int 8
 int 60
 box_extract
 log
-b main_l9
-main_l11:
+b main_l17
+main_l20:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l16
+main_l21:
+txna ApplicationArgs 2
+btoi
+b main_l14
+main_l22:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l12
+main_l23:
+txna ApplicationArgs 1
+btoi
+b main_l10
+main_l24:
 txn Sender
 global CreatorAddress
 ==
@@ -138,8 +212,8 @@ store 3
 store 2
 load 3
 !
-bnz main_l13
-main_l12:
+bnz main_l26
+main_l25:
 txna ApplicationArgs 5
 btoi
 txna ApplicationArgs 6
@@ -208,7 +282,7 @@ concat
 box_replace
 int 1
 return
-main_l13:
+main_l26:
 txna ApplicationArgs 5
 btoi
 txna ApplicationArgs 6
@@ -234,11 +308,11 @@ int 0
 int 0
 itob
 box_replace
-b main_l12
-main_l14:
+b main_l25
+main_l27:
 int 1
 return
-main_l15:
+main_l28:
 int 1
 return
 
