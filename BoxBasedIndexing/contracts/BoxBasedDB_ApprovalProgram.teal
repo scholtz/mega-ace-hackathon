@@ -1,0 +1,321 @@
+#pragma version 8
+txn ApplicationID
+int 0
+==
+bnz main_l27
+txna ApplicationArgs 0
+byte "NONE"
+==
+bnz main_l26
+txna ApplicationArgs 0
+byte "CREATE"
+==
+bnz main_l23
+txna ApplicationArgs 0
+byte "LOOKUP_BY_LOC"
+==
+bnz main_l5
+err
+main_l5:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+callsub getBox_0
+box_get
+store 7
+store 6
+int 0
+store 8
+main_l6:
+load 8
+load 6
+extract 0 8
+btoi
+<
+bnz main_l8
+int 1
+return
+main_l8:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+callsub getBox_0
+load 8
+int 60
+*
+int 44
++
+int 8
+box_extract
+btoi
+store 9
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+callsub getBox_0
+load 8
+int 60
+*
+int 52
++
+int 8
+box_extract
+btoi
+store 10
+load 9
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l22
+int 0
+main_l10:
+>=
+load 9
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l21
+int 10000
+main_l12:
+<=
+&&
+load 10
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
+>
+bnz main_l20
+int 0
+main_l14:
+>=
+&&
+load 10
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+int 10000
+<
+bnz main_l19
+int 10000
+main_l16:
+<=
+&&
+bnz main_l18
+main_l17:
+load 8
+int 1
++
+store 8
+b main_l6
+main_l18:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 2
+btoi
+callsub getBox_0
+load 8
+int 60
+*
+int 8
++
+int 60
+box_extract
+log
+b main_l17
+main_l19:
+txna ApplicationArgs 2
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l16
+main_l20:
+txna ApplicationArgs 2
+btoi
+b main_l14
+main_l21:
+txna ApplicationArgs 1
+btoi
+txna ApplicationArgs 3
+btoi
++
+b main_l12
+main_l22:
+txna ApplicationArgs 1
+btoi
+b main_l10
+main_l23:
+txn Sender
+global CreatorAddress
+==
+assert
+txna ApplicationArgs 2
+len
+int 8
+==
+assert
+txna ApplicationArgs 3
+len
+int 8
+==
+assert
+txna ApplicationArgs 4
+len
+int 8
+==
+assert
+txna ApplicationArgs 5
+len
+int 8
+==
+assert
+txna ApplicationArgs 6
+len
+int 8
+==
+assert
+txna ApplicationArgs 7
+len
+int 8
+==
+assert
+txna ApplicationArgs 5
+btoi
+txna ApplicationArgs 6
+btoi
+callsub getBox_0
+box_get
+store 3
+store 2
+load 3
+!
+bnz main_l25
+main_l24:
+txna ApplicationArgs 5
+btoi
+txna ApplicationArgs 6
+btoi
+callsub getBox_0
+box_get
+store 1
+store 0
+load 1
+assert
+txna ApplicationArgs 5
+btoi
+txna ApplicationArgs 6
+btoi
+callsub getBox_0
+int 0
+load 0
+extract 0 8
+btoi
+int 1
++
+itob
+box_replace
+txna ApplicationArgs 1
+txna ApplicationArgs 2
+concat
+txna ApplicationArgs 3
+concat
+txna ApplicationArgs 4
+concat
+txna ApplicationArgs 5
+concat
+txna ApplicationArgs 6
+concat
+txna ApplicationArgs 7
+concat
+len
+int 60
+==
+assert
+txna ApplicationArgs 5
+btoi
+txna ApplicationArgs 6
+btoi
+callsub getBox_0
+load 0
+extract 0 8
+btoi
+int 60
+*
+int 8
++
+txna ApplicationArgs 1
+txna ApplicationArgs 2
+concat
+txna ApplicationArgs 3
+concat
+txna ApplicationArgs 4
+concat
+txna ApplicationArgs 5
+concat
+txna ApplicationArgs 6
+concat
+txna ApplicationArgs 7
+concat
+box_replace
+int 1
+return
+main_l25:
+txna ApplicationArgs 5
+btoi
+txna ApplicationArgs 6
+btoi
+callsub getBox_0
+int 4000
+box_create
+assert
+txna ApplicationArgs 5
+btoi
+txna ApplicationArgs 6
+btoi
+callsub getBox_0
+box_get
+store 5
+store 4
+txna ApplicationArgs 5
+btoi
+txna ApplicationArgs 6
+btoi
+callsub getBox_0
+int 0
+int 0
+itob
+box_replace
+b main_l24
+main_l26:
+int 1
+return
+main_l27:
+int 1
+return
+
+// getBox
+getBox_0:
+proto 2 1
+frame_dig -2
+int 910
+/
+int 11
+frame_dig -1
+int 910
+/
+*
++
+itob
+retsub
