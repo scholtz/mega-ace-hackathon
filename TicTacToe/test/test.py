@@ -10,9 +10,10 @@
 #from algosdk import transaction, abi, account
 #from algosdk.abi.address_type import AddressType
 #from base64 import b64decode
-from graviton import *
-from graviton.blackbox import DryRunExecutor, ExecutionMode, DryRunInspector, DryRunTransactionParams, CREATION_APP_CALL, EXISTING_APP_CALL
-from tests.clients import get_algod
+import sys
+from graviton.graviton import *
+from graviton.graviton.blackbox import DryRunExecutor, ExecutionMode, DryRunInspector, DryRunTransactionParams, CREATION_APP_CALL, EXISTING_APP_CALL
+from graviton.tests.clients import get_algod
 from common import algo_init, getNodeUrl
 from itertools import combinations
 import unittest
@@ -93,6 +94,7 @@ class Game:
 
     def __get_inspector(self, dre, args):
             try:
+                print("args",args)
                 inspector = dre.run_one(args)
             except:
                 assert(False), "Failed to get inspector. The code has syntax errors!"
@@ -101,6 +103,7 @@ class Game:
     def _get_scratch(self):
         # init graviton's dry run executor
         dre = self.__get_DryRunExecutor()
+        print("self.input",self.input)
         inspector = self.__get_inspector(dre, (self.input,))
         scratch = inspector.black_box_results.scratch_evolution
         self.inspector = inspector
@@ -108,6 +111,7 @@ class Game:
     
     def _get_status(self, _log):
         log = _decodeLog(_log)
+        #print("_get_status",log)
         if log == "player wins":
             finished = True
             winner = "player"
@@ -127,11 +131,14 @@ class Game:
     def decode_game_from_scratch(self):
         scratch = self._get_scratch()
         move = 1
+        #print("scratch",scratch)
         for i, s in enumerate(scratch):
             if len(s) > 0:
-                print(s)                
+                print("s",s)                
                 for j in range(len(s)):
                     k, v = s[j].split("->")
+                    if k == "99":
+                        logger.warning("DEBUG>>>>>>>> {}".format(_decodeLog(v)))
                     if k in STATUS_SCRATCH:
                         finished, winner = self._get_status(v)
                         print("status {} {}".format(finished, winner))
@@ -145,12 +152,12 @@ class Game:
                         try: 
                             self.gameboard.update({k: v})
                         except Exception as e:
-                            logger.debug("Game finished. Exception {}".format(e))
+                            logger.warning("Game finished. Exception {}".format(e))
                             self.contract_appointed_winner = "none"
                             return (True, "none")
                         self.moves += [k]
-                        logger.debug("New move {}. Moves: {}".format(k, self.moves))
-                        logger.debug("Move {}. Player {} moved in {}.".format(move, v, k))
+                        logger.warning("New move {}. Moves: {}".format(k, self.moves))
+                        logger.warning("Move {}. Player {} moved in {}.".format(move, v, k))
 
                         move += 1
                         if move > 9:
@@ -181,10 +188,11 @@ class Game:
 
     def assert_correct_placement(self):
         # check if any move played on occupied by checking on repeated elements
+        print("self.moves",self.moves)
         for i, m in enumerate(self.moves):
             whoplays = i % 2
             if self.gameboard.place(m) != str(whoplays + 1):
-                logger.debug("Inconsistent move")
+                logger.debug("Inconsistent move",i,m,str(whoplays + 1))
                 return False
         return True
     #############################################################
@@ -311,9 +319,31 @@ def _decodeLog(logline):
 
 def generate_all_inputs():
     all_inputs = []
-    # at most 5 moves for 1st player
-    for game_input in combinations(BOARD_PLACINGS, 5):
+    if True:
+        game_input=('5','9','2','4','7') # ['5', '1', '9', '3', '2', '8', '4', '6', '7']
         all_inputs.append(encode_input(game_input))
+    if True:
+        game_input=('9','1','8','3','4') # ['9', '5', '1', '2', '8', '7', '3', '6', '4']
+        all_inputs.append(encode_input(game_input))
+    if True:
+        game_input=('7','1','6','8','3') # ['7', '5', '1', '4', '6', '2', '8', '9', '3']
+        all_inputs.append(encode_input(game_input))
+    if True:
+        game_input=('5','8','3','4','9') # ['5', '1', '8', '2', '3', '7', '4', '6', '9']
+        all_inputs.append(encode_input(game_input))
+    if True:
+        game_input=('5','7','2','6','9') # ['5', '1', '7', '3', '2', '8', '6', '4', '9']
+        all_inputs.append(encode_input(game_input))
+    if True:
+        game_input=('7','3','8','1','6') # ['7', '5', '3', '2', '8', '9', '1', '4', '6']
+        all_inputs.append(encode_input(game_input))
+
+
+    # at most 5 moves for 1st player
+    # for game_input in combinations(BOARD_PLACINGS, 5):
+    #     game_input=('5','9','3','7','6')
+    #     all_inputs.append(encode_input(game_input))
+    # print("all_inputs",all_inputs)
     return all_inputs
 
 
