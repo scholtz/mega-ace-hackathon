@@ -107,9 +107,9 @@ def approval_program():
     FindX = Btoi(Txn.application_args[1])
     FindY = Btoi(Txn.application_args[2])
     Radius = Btoi(Txn.application_args[3])
-    FindXMin = If(FindX > Radius, FindX, Int(0))
+    FindXMin = If(FindX > Radius, FindX - Radius, Int(0))
     FindXMax = If(FindX + Radius < Int(10000), FindX + Radius, Int(10000))
-    FindYMin = If(FindY > Radius, FindY, Int(0))
+    FindYMin = If(FindY > Radius, FindY - Radius, Int(0))
     FindYMax = If(FindY + Radius < Int(10000), FindY + Radius, Int(10000))
 
     FindInBoxnameTL = getBox(FindXMin,FindYMin)

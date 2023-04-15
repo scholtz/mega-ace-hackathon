@@ -16,15 +16,32 @@ CLEARSTATE_SRC = os.path.join('.', 'contracts', "BoxBasedDB_ClearStateProgram.te
 #X_ev=[4534,460,714,5587,1275,3440,1690,3517,8634,4109]
 #Y_ev=[2574,9931,4646,3162,243,6631,3156,7162,1937,1427]
 
-X_ev=[0,3,3]
-Y_ev=[0,0,3]
+# X_ev=[0,3,3]
+# Y_ev=[0,0,3]
 
-tests=[{'x':0,'y':0,'r':3,'results':{'0-0':True,'3-0':True}}]
+# tests=[{'x':0,'y':0,'r':3,'results':{'0-0':True,'3-0':True}}]
 
-# X_ev=[909,909,910,910]
-# Y_ev=[909,910,909,910]
+X_ev=[909,909,910,910]
+Y_ev=[909,910,909,910]
 
-# tests=[{'x':909,'y':909,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}}]
+tests=[
+    {'x':909,'y':909,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}},
+    {'x':910,'y':909,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}},
+    {'x':909,'y':910,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}},
+    {'x':910,'y':910,'r':3,'results':{'909-909':True,'909-910':True,'910-909':True,'910-910':True}},
+]
+
+# X_ev=[10000,9999]
+# Y_ev=[10000,9999]
+
+# tests=[{'x':10000,'y':10000,'r':3,'results':{'10000-10000':True,'9999-9999':True}}]
+
+# X_ev=[10,10,10,9,11]
+# Y_ev=[9,10,11,10,10]
+
+# tests=[{'x':10,'y':10,'r':1,'results':{'10-10':True,'9-10':True,'11-10':True,'10-9':True,'10-11':True}}]
+
+
 
 def compileTEAL(client, code):
     compile_response = client.compile(code)
