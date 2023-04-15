@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import unittest
 from unittest import TextTestRunner, TestLoader
@@ -5,8 +7,8 @@ from unittest import TextTestRunner, TestLoader
 from algosdk.v2client.algod import AlgodClient
 
 from DevHelper import GenerateTEAL
-from graviton import *
-from graviton.blackbox import DryRunExecutor, ExecutionMode, DryRunInspector, DryRunTransactionParams
+from graviton.graviton import *
+from graviton.graviton.blackbox import DryRunExecutor, ExecutionMode, DryRunInspector, DryRunTransactionParams
 import hashlib
 import json
 
