@@ -140,6 +140,7 @@ def assignScratchSlotsToSubroutines(
     for subroutine, start in subroutineBlocks.items():
         errors = start.validateSlots(slotsInUse=global_slots)
         if len(errors) > 0:
+            print(errors)
             msg = "Encountered {} error{} when assigning slots to subroutine".format(
                 len(errors), "s" if len(errors) != 1 else ""
             )

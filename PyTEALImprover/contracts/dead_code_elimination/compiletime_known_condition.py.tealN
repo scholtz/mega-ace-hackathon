@@ -1,0 +1,41 @@
+#pragma version 8
+int 0
+bnz main_l12
+int 1
+main_l2:
+int 1
+bnz main_l11
+int 9999
+main_l4:
++
+int 0
+int 1
+==
+bnz main_l10
+int 2
+int 3
+==
+bnz main_l9
+int 3
+int 3
+==
+bnz main_l8
+err
+main_l8:
+int 3
+b main_l13
+main_l9:
+int 998
+b main_l13
+main_l10:
+int 999
+b main_l13
+main_l11:
+int 2
+b main_l4
+main_l12:
+int 9999
+b main_l2
+main_l13:
++
+return

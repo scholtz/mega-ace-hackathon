@@ -1,0 +1,22 @@
+#pragma version 8
+txna ApplicationArgs 0
+btoi
+bnz main_l5
+int 9
+main_l2:
+int 4
+txna ApplicationArgs 0
+btoi
+bnz main_l4
+int 33
+b main_l6
+main_l4:
+int 9
+b main_l6
+main_l5:
+int 33
+b main_l2
+main_l6:
+*
++
+return

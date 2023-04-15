@@ -119,7 +119,7 @@ class PyTEALTest(TestCase):
 
     def exec(self, *args, state={}, name=None):
         name = f"{name or len(self.executions)}"
-        txn_params = DryRunTransactionParams.for_app(global_state=state)
+        txn_params = DryRunTransactionParams.for_app(state)
         original_execution = self.original_executor.run_one(args, txn_params=txn_params)
         improved_execution = self.improved_executor.run_one(args, txn_params=txn_params)
         self.executions.append({
@@ -149,7 +149,7 @@ class HackatonTestResult(TestResult):
         self.verbosity = verbosity
 
         self.print_stats = 0 < verbosity
-        self.print_teal = 1 < verbosity
+        self.print_teal = True #1 < verbosity
 
     def afterSetUpClass(self, test):
         self._print(0, f"Contract {test.filename}")
@@ -160,15 +160,26 @@ class HackatonTestResult(TestResult):
             self._print(1, f"Original bytecode len: {original_len}")
             self._print(1, f"Improved bytecode len: {improved_len}")
 
+
         if self.print_teal:
-            self._print(1, "Original TEAL")
-            self.stream.writeln(self.separator2)
-            self.stream.writeln(test.original_teal)
-            self.stream.writeln(self.separator2)
-            self._print(1, "Improved TEAL")
-            self.stream.writeln(self.separator2)
-            self.stream.writeln(test.improved_teal)
-            self.stream.writeln(self.separator2)
+            print(f"writing to {test.filename}.tealO")
+            f = open(f"{test.filename}.tealO", "w")
+            f.write(test.original_teal)
+            f.close()
+
+            print(f"writing to {test.filename}.tealN")
+            f = open(f"{test.filename}.tealN", "w")
+            f.write(test.improved_teal)
+            f.close()
+            
+            # self._print(1, "Original TEAL")
+            # self.stream.writeln(self.separator2)
+            # self.stream.writeln(test.original_teal)
+            # self.stream.writeln(self.separator2)
+            # self._print(1, "Improved TEAL")
+            # self.stream.writeln(self.separator2)
+            # self.stream.writeln(test.improved_teal)
+            # self.stream.writeln(self.separator2)
 
         self.stream.flush()
 

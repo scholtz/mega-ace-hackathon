@@ -5,6 +5,8 @@ from pyteal.errors import TealInputError, TealTypeError, TealSeqError
 from pyteal.ir import TealSimpleBlock
 from pyteal.ast.expr import Expr
 
+from pyteal.ast.return_ import Return
+
 if TYPE_CHECKING:
     from pyteal.compiler import CompileOptions
 
@@ -46,11 +48,23 @@ class Seq(Expr):
         # Handle case where a list of expressions is provided
         if len(exprs) == 1 and isinstance(exprs[0], list):
             exprs = exprs[0]
-
+        toDelete=False
+        #print("origin.exprs",exprs)
+        tupleX = list(exprs)
+        #print("origin.tupleX",tupleX)
         for i, expr in enumerate(exprs):
+            if toDelete:
+                if i == len(exprs) - 1 : # do not delete last item
+                    continue
+                #print("tupleX",tupleX)
+                #print("deleting",expr)
+                tupleX.remove(expr)
+                #print("tupleX",tupleX)
+                continue
             if not isinstance(expr, Expr):
                 raise TealInputError("{} is not a pyteal expression.".format(expr))
             if i + 1 < len(exprs):
+                
                 try:
                     require_type(expr, TealType.none)
                 except TealTypeError:
@@ -62,7 +76,18 @@ class Seq(Expr):
                     )
                     seq_error = TealSeqError(message)
                     raise seq_error
+            if isinstance(expr,Return):
+                if i == len(exprs) - 1 : # do not delete last item
+                    continue
+                #print("expr",expr.__class__,isinstance(expr,Return))
+                #print("exprs",exprs)
+                exprs = tupleX[0:i+1] + tupleX[-1:]
+                #print("new.tupleX",tupleX)
+                #print("exprs",exprs)
+                break
 
+        #print("toDelete",toDelete)
+        #print("exprs",exprs)
         self.args = exprs
 
     def __teal__(self, options: "CompileOptions"):

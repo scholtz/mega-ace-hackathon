@@ -1,0 +1,30 @@
+#pragma version 8
+int 3
+return
+int 2
+int 9
++
+store 0
+load 0
+int 1
++
+store 0
+load 0
+int 1
++
+store 0
+load 0
+int 1
++
+store 0
+load 0
+int 1
++
+store 0
+load 0
+txna ApplicationArgs 0
+btoi
+*
+store 0
+int 1
+return
